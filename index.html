@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Switcher</title>
+    <style>
+        /* Base styles that apply to all themes */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            margin-top: 0;
+        }
+        
+        select {
+            padding: 8px 12px;
+            font-size: 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        /* Theme-specific styles */
+        .light-theme {
+            background-color: #ffffff;
+            color: #333333;
+        }
+        
+        .light-theme .container {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+        }
+        
+        .dark-theme {
+            background-color: #333333;
+            color: #f5f5f5;
+        }
+        
+        .dark-theme .container {
+            background-color: #444444;
+            border: 1px solid #666;
+        }
+        
+        .dark-theme select {
+            background-color: #555;
+            color: white;
+            border: 1px solid #666;
+        }
+        
+        .blue-theme {
+            background-color: #e6f2ff;
+            color: #003366;
+        }
+        
+        .blue-theme .container {
+            background-color: #cce0ff;
+            border: 1px solid #99c2ff;
+        }
+        
+        .blue-theme select {
+            background-color: #b3d1ff;
+            border: 1px solid #99c2ff;
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <div class="container">
+        <h1>Theme Switcher</h1>
+        
+        <label for="theme-selector">Choose a theme:</label>
+        <select id="theme-selector">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="blue">Blue</option>
+        </select>
+        
+        <h2>Sample Content</h2>
+        <p>This is some sample text to demonstrate the theme colors. When you select a different theme from the dropdown, the colors will change immediately.</p>
+        <p>The selected theme will be remembered during your current session (until you close the tab).</p>
+    </div>
+
+    <script>
+        // DOM elements
+        const themeSelector = document.getElementById('theme-selector');
+        const body = document.body;
+        
+        // Theme class names
+        const themes = {
+            light: 'light-theme',
+            dark: 'dark-theme',
+            blue: 'blue-theme'
+        };
+        
+        // Function to apply a theme
+        function applyTheme(themeName) {
+            // Remove all theme classes first
+            Object.values(themes).forEach(themeClass => {
+                body.classList.remove(themeClass);
+            });
+            
+            // Add the selected theme class
+            body.classList.add(themes[themeName]);
+            
+            // Update the dropdown to show current selection
+            themeSelector.value = themeName;
+            
+            // Store the selected theme in sessionStorage
+            sessionStorage.setItem('selectedTheme', themeName);
+        }
+        
+        // Function to initialize the theme
+        function initializeTheme() {
+            // Check sessionStorage for a saved theme
+            const savedTheme = sessionStorage.getItem('selectedTheme');
+            
+            // Apply the saved theme if it exists, otherwise use light theme
+            if (savedTheme && themes[savedTheme]) {
+                applyTheme(savedTheme);
+            } else {
+                applyTheme('light');
+            }
+        }
+        
+        // Event listener for theme selection changes
+        themeSelector.addEventListener('change', (e) => {
+            applyTheme(e.target.value);
+        });
+        
+        // Initialize the theme when the page loads
+        document.addEventListener('DOMContentLoaded', initializeTheme);
+    </script>
+</body>
+</html>
